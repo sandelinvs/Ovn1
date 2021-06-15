@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 namespace EnterprisePsychosis
 {
-    partial class Program
-    {
         public class CommandHandler
         {
             private Dictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
@@ -32,6 +30,6 @@ namespace EnterprisePsychosis
                     OnExecute?.Invoke(this, new CommandExecutedEventArgs { Command = cmd });
                 }
             }
-        }
+        
     }
 }

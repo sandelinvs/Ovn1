@@ -24,8 +24,6 @@ namespace EnterprisePsychosis
 
     public interface IPayroll : IEnumerable<Employee>
     {
-        event EventHandler<EmployeeAddedEventArgs> OnAdd;
-
         void AddEmployee(string name, decimal salary);
     }
 
@@ -37,8 +35,6 @@ namespace EnterprisePsychosis
     public class Payroll : IPayroll
     {
         private readonly List<Employee> _employees = new List<Employee>();
-
-        public event EventHandler<EmployeeAddedEventArgs> OnAdd;
 
         public void AddEmployee(string name, decimal salary)
         {
@@ -61,21 +57,5 @@ namespace EnterprisePsychosis
     public interface IPayrollPrinter
     {
         void Print();
-    }
-
-    public class ConsolePrinter : IPayrollPrinter
-    {
-        public ConsolePrinter(IPayroll payroll)
-        {
-            foreach (var employee in payroll)
-            {
-                Console.WriteLine(employee);
-            }
-        }
-
-        public void Print()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

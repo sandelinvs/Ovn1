@@ -2,19 +2,16 @@
 
 namespace EnterprisePsychosis
 {
-    partial class Program 
+    public class ConsoleUI : IUI
     {
-        public class ConsoleUI : IUI
-{
-    public void WriteLine(string line)
-    {
-        Console.WriteLine(line);
-    }
+        public void WriteLine(string line)
+        {
+            Console.WriteLine(line);
+        }
 
-    public string ReadLine()
-    {
-        return Console.ReadLine();
+        public string ReadLine()
+        {
+            return Console.ReadLine();
+        }
     }
-}
-
 }

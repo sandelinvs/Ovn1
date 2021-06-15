@@ -1,12 +1,9 @@
 ﻿namespace EnterprisePsychosis
 {
-    partial class Program 
+    public interface IUI
     {
-        public interface IUI
-{
-    void WriteLine(string line);
+        void WriteLine(string line);
 
-    string ReadLine();
-}
-
+        string ReadLine();
+    }
 }
