@@ -5,4 +5,10 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Usings\**" />
+    <EmbeddedResource Remove="Usings\**" />
+    <None Remove="Usings\**" />
+  </ItemGroup>
+
 </Project>
