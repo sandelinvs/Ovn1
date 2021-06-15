@@ -1,161 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EnterprisePsychosis;
+﻿using EnterprisePsychosis;
 
-
-IUI Ui = new ConsoleUI();
-
-IPayroll Payroll = new Payroll();
-
-CommandHandlerFactory factory = new CommandHandlerFactory();
-
-CommandHandler cmdHandler = factory.Create(Payroll);
-
-Ui.WriteLine("Commands:");
-Ui.WriteLine("add [name] [salary] // add an employee to the payroll");
-Ui.WriteLine("print // prints the payroll to console");
-Ui.WriteLine("exit // exits the application");
-Ui.WriteLine("------------------------------------------------------");
-
-string line;
-
-while ((line = Ui.ReadLine()) != "exit")
+namespace EnterprisePsychosis
 {
-    if (line == null)
-        continue;
-
-    string[] args = line.Split("");
-
-}
-
-public class CommandHandlerFactory
-{
-    public CommandHandler Create(IPayroll payroll)
+    partial class Program
     {
-        var type = typeof(ICommand);
+        static IUI Ui = new ConsoleUI();
 
-        var types = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(x => x.GetTypes())
-            .Where(x => !type.IsAbstract && type.IsAssignableFrom(x));
+        static IPayroll Payroll = new Payroll();
 
-        var commands = new List<ICommand>();
+        static CommandHandlerFactory factory = new CommandHandlerFactory();
 
-        foreach (var t in types)
+        public static void main(string[] args)
         {
-            var command = (ICommand)Activator.CreateInstance(type, payroll);
+            CommandHandler cmdHandler = factory.Create(Payroll);
+            cmdHandler.OnExecute += OnExecute;
 
-            commands.Add(command);
-        }
 
-        return new CommandHandler(commands);
-    }
-}
+            Ui.WriteLine("Commands:");
+            Ui.WriteLine("add [name] [salary] // add an employee to the payroll");
+            Ui.WriteLine("print // prints the payroll to console");
+            Ui.WriteLine("exit // exits the application");
+            Ui.WriteLine("------------------------------------------------------");
 
-public class CommandHandler
-{
-    private Dictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
+            string line;
 
-    public event EventHandler<CommandExecutedEventArgs> OnExecute;
+            while ((line = Ui.ReadLine()) != "exit")
+            {
+                if (line == null)
+                    continue;
 
-    public CommandHandler(IEnumerable<ICommand> commands)
-    {
-        foreach (var cmd in commands)
-        {
-            _commands.Add(cmd.CommandName, cmd);
-        }
-    }
+                cmdHandler.Execute(line);
+            }
 
-    public void Execute(string commandLine)
-    {
-        var commandLineArguments = commandLine.Split(" ");
-
-        var commandName = commandLineArguments[0];
-
-        if (_commands.TryGetValue(commandName, out ICommand cmd))
-        {
-            cmd.Execute(commandLineArguments);
-
-            OnExecute?.Invoke(this, new CommandExecutedEventArgs { Command = cmd });
+            static void OnExecute(object sender, CommandExecutedEventArgs e)
+            {
+                Ui.WriteLine($"{e.Command.CommandName} probably executed succesfully");
+            }
         }
     }
 }
-
-public class CommandExecutedEventArgs : EventArgs
-{
-    public ICommand Command { get; set; }
-}
-
-public interface ICommand
-{
-    public string CommandName { get; }
-
-    public void Execute(params string[] args);
-}
-
-public class AddCommand : ICommand
-{
-    public string CommandName { get;} = "add";
-
-    public IPayroll Payroll { get; }
-    public IUI Ui { get; }
-
-    public AddCommand(IPayroll payroll, IUI ui)
-    {
-        Payroll = payroll;
-        Ui = ui;
-    }
-
-    public void Execute(params string[] args)
-    {
-        decimal salary;
-
-        if (Decimal.TryParse(args[2], out salary))
-        {
-            Payroll.AddEmployee(args[1], salary);
-        }
-    }
-}
-
-public class PrintCommand : ICommand
-{
-    public string CommandName { get; } = "print";
-
-    public IPayroll Payroll { get; }
-    public IUI Ui { get; }
-
-    public PrintCommand(IPayroll payroll, IUI ui)
-    {
-        Payroll = payroll;
-        Ui = ui;
-    }
-
-    public void Execute(params string[] args)
-    {
-        foreach (var employee in Payroll)
-        {
-            Ui.WriteLine(employee.ToString());
-        }
-    }
-}
-
-public interface IUI
-{
-    void WriteLine(string line);
-
-    string ReadLine();
-}
-
-public class ConsoleUI : IUI
-{
-    public void WriteLine(string line)
-    {
-        Console.WriteLine(line);
-    }
-
-    public string ReadLine()
-    {
-        return Console.ReadLine();
-    }
-}
-
