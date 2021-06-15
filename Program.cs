@@ -12,7 +12,8 @@ namespace EnterprisePsychosis
 
         public static void Main(string[] args)
         {
-            CommandHandler cmdHandler = factory.Create(Payroll);
+            CommandHandler cmdHandler = factory.Create(Payroll, Ui);
+
             cmdHandler.OnExecute += OnExecute;
 
 

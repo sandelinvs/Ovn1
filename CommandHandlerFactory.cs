@@ -8,19 +8,20 @@ namespace EnterprisePsychosis
     {
         public class CommandHandlerFactory
         {
-            public CommandHandler Create(IPayroll payroll)
+            public CommandHandler Create(IPayroll payroll, IUI ui)
             {
                 var type = typeof(ICommand);
 
                 var types = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(x => x.GetTypes())
-                    .Where(x => !type.IsAbstract && type.IsAssignableFrom(x));
+                    .Where(x => !x.IsInterface && !x.IsAbstract && type.IsAssignableFrom(x))
+                    .ToArray();
 
                 var commands = new List<ICommand>();
 
                 foreach (var t in types)
                 {
-                    var command = (ICommand)Activator.CreateInstance(type, payroll);
+                    var command = (ICommand)Activator.CreateInstance(t, payroll, ui);
 
                     commands.Add(command);
                 }
