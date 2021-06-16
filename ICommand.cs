@@ -4,6 +4,6 @@
     {
         public string CommandName { get; }
 
-        public void Execute(params string[] args);
+        public CommandResult Execute(params string[] args);
     }
 }

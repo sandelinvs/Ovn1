@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace EnterprisePsychosis
 {
-    public class CommandHandlerFactory
+
+    public class CommandHandlerFactory : ICommandHandlerFactory
     {
-        public CommandHandler Create(IPayroll payroll, IUI ui)
+        public ICommandHandler Create(IPayroll payroll)
         {
             var type = typeof(ICommand);
 
@@ -19,7 +20,7 @@ namespace EnterprisePsychosis
 
             foreach (var t in types)
             {
-                var command = (ICommand)Activator.CreateInstance(t, payroll, ui);
+                var command = (ICommand)Activator.CreateInstance(t, payroll);
 
                 commands.Add(command);
             }
@@ -27,5 +28,5 @@ namespace EnterprisePsychosis
             return new CommandHandler(commands);
         }
     }
-    
+
 }

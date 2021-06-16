@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace EnterprisePsychosis
 {
-    public class CommandHandler
+
+    public class CommandHandler : ICommandHandler
     {
         private Dictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
 
@@ -25,9 +26,9 @@ namespace EnterprisePsychosis
 
             if (_commands.TryGetValue(commandName, out ICommand cmd))
             {
-                cmd.Execute(commandLineArguments);
+                CommandResult result = cmd.Execute(commandLineArguments);
 
-                OnExecute?.Invoke(this, new CommandExecutedEventArgs { Command = cmd });
+                OnExecute?.Invoke(this, new CommandExecutedEventArgs { Command = cmd, Result = result });
             }
         }
     }

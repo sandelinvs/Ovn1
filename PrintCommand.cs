@@ -1,24 +1,24 @@
-﻿namespace EnterprisePsychosis
+﻿using System;
+using System.Linq;
+
+namespace EnterprisePsychosis
 {
     public class PrintCommand : ICommand
     {
         public string CommandName { get; } = "print";
 
         public IPayroll Payroll { get; }
-        public IUI Ui { get; }
 
-        public PrintCommand(IPayroll payroll, IUI ui)
+        public PrintCommand(IPayroll payroll)
         {
             Payroll = payroll;
-            Ui = ui;
         }
 
-        public void Execute(params string[] args)
+        public CommandResult Execute(params string[] args)
         {
-            foreach (var employee in Payroll)
-            {
-                Ui.WriteLine(employee.ToString());
-            }
+            var list = string.Join(Environment.NewLine, Payroll);
+
+            return new CommandResult { Success = true, Result = list };
         }
     }
 }

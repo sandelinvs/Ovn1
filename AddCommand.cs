@@ -8,22 +8,31 @@ namespace EnterprisePsychosis
 
         public IPayroll Payroll { get; }
 
-        public IUI Ui { get; }
-
-        public AddCommand(IPayroll payroll, IUI ui)
+        public AddCommand(IPayroll payroll)
         {
             Payroll = payroll;
-            Ui = ui;
         }
 
-        public void Execute(params string[] args)
+        public CommandResult Execute(params string[] args)
         {
             decimal salary;
 
             if (Decimal.TryParse(args[2], out salary))
             {
                 Payroll.AddEmployee(args[1], salary);
+
+                return new CommandResult
+                {
+                    Success = true,
+                    Result = $"New employee ({args[1]}) with salary {salary} added succesfully"
+                };
             }
+
+            return new CommandResult
+            {
+                Success = false,
+                Result = $"Failed to add new employee ({args[1]}) with salary {args[2]}"
+            };
         }
     }
     
