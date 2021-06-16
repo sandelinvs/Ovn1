@@ -2,10 +2,8 @@
 
 namespace EnterprisePsychosis
 {
-
-        public class CommandExecutedEventArgs : EventArgs
-        {
-            public ICommand Command { get; set; }
-        }
-    
+    public class CommandExecutedEventArgs : EventArgs
+    {
+        public ICommand Command { get; set; }
+    }
 }

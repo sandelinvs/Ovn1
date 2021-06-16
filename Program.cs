@@ -2,20 +2,19 @@
 
 namespace EnterprisePsychosis
 {
-    partial class Program
+    class Program
     {
         static IUI Ui = new ConsoleUI();
 
         static IPayroll Payroll = new Payroll();
 
-        static CommandHandlerFactory factory = new CommandHandlerFactory();
+        static CommandHandlerFactory Factory = new CommandHandlerFactory();
 
         public static void Main(string[] args)
         {
-            CommandHandler cmdHandler = factory.Create(Payroll, Ui);
+            CommandHandler cmdHandler = Factory.Create(Payroll, Ui);
 
             cmdHandler.OnExecute += OnExecute;
-
 
             Ui.WriteLine("Commands:");
             Ui.WriteLine("add [name] [salary] // add an employee to the payroll");
@@ -32,11 +31,11 @@ namespace EnterprisePsychosis
 
                 cmdHandler.Execute(line);
             }
+        }
 
-            static void OnExecute(object sender, CommandExecutedEventArgs e)
-            {
-                Ui.WriteLine($"{e.Command.CommandName} probably executed succesfully");
-            }
+        public static void OnExecute(object sender, CommandExecutedEventArgs e)
+        {
+            Ui.WriteLine($"{e.Command.CommandName} probably executed succesfully");
         }
     }
 }

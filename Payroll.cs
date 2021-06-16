@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace EnterprisePsychosis
 {
-
     public class Payroll : IPayroll
     {
         private readonly List<Employee> _employees = new List<Employee>();

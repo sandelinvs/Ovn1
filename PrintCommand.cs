@@ -1,6 +1,5 @@
 ﻿namespace EnterprisePsychosis
 {
-
     public class PrintCommand : ICommand
     {
         public string CommandName { get; } = "print";
@@ -21,6 +20,5 @@
                 Ui.WriteLine(employee.ToString());
             }
         }
-        
     }
 }

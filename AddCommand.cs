@@ -2,30 +2,29 @@
 
 namespace EnterprisePsychosis
 {
-    partial class Program
+    public class AddCommand : ICommand
     {
-        public class AddCommand : ICommand
+        public string CommandName { get; } = "add";
+
+        public IPayroll Payroll { get; }
+
+        public IUI Ui { get; }
+
+        public AddCommand(IPayroll payroll, IUI ui)
         {
-            public string CommandName { get; } = "add";
+            Payroll = payroll;
+            Ui = ui;
+        }
 
-            public IPayroll Payroll { get; }
-            public IUI Ui { get; }
+        public void Execute(params string[] args)
+        {
+            decimal salary;
 
-            public AddCommand(IPayroll payroll, IUI ui)
+            if (Decimal.TryParse(args[2], out salary))
             {
-                Payroll = payroll;
-                Ui = ui;
-            }
-
-            public void Execute(params string[] args)
-            {
-                decimal salary;
-
-                if (Decimal.TryParse(args[2], out salary))
-                {
-                    Payroll.AddEmployee(args[1], salary);
-                }
+                Payroll.AddEmployee(args[1], salary);
             }
         }
     }
+    
 }
