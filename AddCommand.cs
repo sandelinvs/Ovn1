@@ -6,6 +6,8 @@ namespace EnterprisePsychosis
     {
         public string CommandName { get; } = "add";
 
+        public string Description { get; } = @"add [name] [salary] // adds an employee to the payroll";
+
         public IPayroll Payroll { get; }
 
         public AddCommand(IPayroll payroll)

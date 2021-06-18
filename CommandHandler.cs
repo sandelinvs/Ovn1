@@ -8,6 +8,8 @@ namespace EnterprisePsychosis
     {
         private Dictionary<string, ICommand> _commands = new Dictionary<string, ICommand>();
 
+        public IEnumerable<ICommand> Commands => _commands.Values;
+
         public event EventHandler<CommandExecutedEventArgs> OnExecute;
 
         public CommandHandler(IEnumerable<ICommand> commands)

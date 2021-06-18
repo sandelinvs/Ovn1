@@ -5,9 +5,11 @@ namespace EnterprisePsychosis
 {
     public class PrintCommand : ICommand
     {
-        public string CommandName { get; } = "print";
+        public string CommandName => "print";
 
         public IPayroll Payroll { get; }
+
+        public string Description => @"Displays a list of the employees on the payroll";
 
         public PrintCommand(IPayroll payroll)
         {

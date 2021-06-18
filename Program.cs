@@ -17,8 +17,12 @@ namespace EnterprisePsychosis
             cmdHandler.OnExecute += OnExecute;
 
             Ui.WriteLine("Commands:");
-            Ui.WriteLine("add [name] [salary] // add an employee to the payroll");
-            Ui.WriteLine("print // prints the payroll to console");
+
+            foreach (var cmd in cmdHandler.Commands)
+            {
+                Ui.WriteLine($"{cmd.CommandName} : {cmd.Description}");
+            }
+
             Ui.WriteLine("exit // exits the application");
             Ui.WriteLine("------------------------------------------------------");
 
